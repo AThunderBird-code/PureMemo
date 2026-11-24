@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self' blob:; connect-src 'self'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PureMemo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true">
+      <symbol id="i-logo" viewBox="0 0 1024 1024">
+        <rect width="1024" height="1024" rx="228" fill="#171614" />
+        <g
+          fill="none"
+          stroke="#F7F1E4"
+          stroke-width="88"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M512 268V520" />
+          <path d="M388 392L512 268L636 392" />
+          <path d="M272 672H752" />
+          <path d="M272 826H596" />
+        </g>
+        <circle cx="690" cy="826" r="44" fill="#E2603C" />
+      </symbol>
+
+      <symbol id="i-mic" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <rect x="9" y="2.8" width="6" height="11" rx="3" />
+          <path d="M5.5 11.2a6.5 6.5 0 0 0 13 0" />
+          <path d="M12 17.7V21" />
+        </g>
+      </symbol>
+
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+          <circle cx="10.8" cy="10.8" r="6.6" />
+          <path d="M15.8 15.8L20.5 20.5" />
+        </g>
+      </symbol>
+
+      <symbol id="i-settings" viewBox="0 0 24 24">
+        <path
+          fill="currentColor"
+          d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"
+        />
+      </symbol>
+
+      <symbol id="i-folder" viewBox="0 0 24 24">
+        <path
+          d="M3.6 6.6a1.6 1.6 0 0 1 1.6-1.6h4l1.8 2.2h7.8a1.6 1.6 0 0 1 1.6 1.6v9.6a1.6 1.6 0 0 1-1.6 1.6H5.2a1.6 1.6 0 0 1-1.6-1.6V6.6Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linejoin="round"
+        />
+      </symbol>
+    </svg>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="titlebar" id="titlebar">
+      <div class="brand">
+        <svg class="brand-mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <h1 class="brand-name">PureMemo</h1>
+        <span class="brand-tag">极简</span>
+      </div>
+      <div class="titlebar-tools">
+        <button class="icon-btn" id="searchBtn" type="button" title="搜索（Ctrl+F）" aria-label="搜索">
+          <svg><use href="#i-search"></use></svg>
+        </button>
+        <button class="icon-btn" id="settingsBtn" type="button" title="设置" aria-label="设置">
+          <svg><use href="#i-settings"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="search-panel" id="searchPanel" hidden>
+      <div class="search-inner">
+        <svg class="search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="在全部记录中查找…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <span class="search-count" id="searchCount"></span>
+        <button class="icon-btn small" id="searchClose" type="button" aria-label="关闭搜索">×</button>
+      </div>
+    </div>
+
+    <main class="page" id="page">
+      <section class="composer" id="composer">
+        <div class="composer-head">
+          <span class="composer-date" id="composerDate">今天</span>
+        </div>
+
+        <textarea
+          id="input"
+          rows="2"
+          spellcheck="false"
+          aria-label="新的记录"
+        ></textarea>
+
+        <div class="composer-foot">
+          <div class="hint">
+            <kbd>Ctrl</kbd><span>+</span><kbd>Enter</kbd><span>记录</span>
+          </div>
+          <div class="composer-actions">
+            <button id="micBtn" class="ghost-btn mic-btn" type="button" title="语音记一条（Ctrl+Shift+M）">
+              <svg><use href="#i-mic"></use></svg>
+              <span>语音</span>
+            </button>
+            <button id="saveBtn" class="primary-btn" type="button">记下</button>
+          </div>
+        </div>
+
+        <div class="recorder" id="recorder" hidden>
+          <span class="rec-dot" aria-hidden="true"></span>
+          <span class="rec-time" id="recTime">00:00</span>
+          <div class="wave" id="wave" aria-hidden="true"></div>
+          <div class="rec-actions">
+            <button id="recCancel" class="ghost-btn tiny" type="button">取消</button>
+            <button id="recStop" class="primary-btn danger" type="button">停止并转写</button>
+          </div>
+        </div>
+
+        <div class="transcribe" id="transcribe" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="transcribe-text" id="transcribeText">正在转写…</span>
+          <button id="transcribeCancel" class="ghost-btn tiny" type="button">取消</button>
+        </div>
+      </section>
+
+      <section class="stream" id="stream" aria-live="polite"></section>
+
+      <footer class="statusbar">
+        <button class="file-link" id="fileLink" type="button" title="在资源管理器中显示">
+          <svg><use href="#i-folder"></use></svg>
+          <span id="filePath">PureMemo.md</span>
+        </button>
+        <div class="status-right">
+          <span id="stats">0 条 · 0 字</span>
+          <span class="status-sep" aria-hidden="true"></span>
+          <span class="bao-dot" id="baoDot" aria-hidden="true"></span>
+          <button class="link-btn" id="baoStatus" type="button">BaoCut 检测中</button>
+        </div>
+      </footer>
+    </main>
+
+    <dialog id="settingsDialog" class="settings-dialog">
+      <form method="dialog" class="settings-card" id="settingsForm">
+        <header class="settings-head">
+          <h2>设置</h2>
+          <button class="icon-btn" value="close" type="submit" aria-label="关闭">×</button>
+        </header>
+
+        <div class="settings-body">
+          <section class="setting">
+            <h3>记录文件</h3>
+            <p class="setting-value" id="settingPath"></p>
+            <div class="setting-actions">
+              <button type="button" class="ghost-btn" id="setPathBtn">更改文件</button>
+              <button type="button" class="ghost-btn" id="revealBtn">打开所在文件夹</button>
+            </div>
+          </section>
+
+          <section class="setting">
+            <h3>语音转写语言</h3>
+            <div class="segmented" id="langGroup" role="group" aria-label="转写语言">
+              <button type="button" data-lang="zh-CN">中文</button>
+              <button type="button" data-lang="en">English</button>
+              <button type="button" data-lang="auto">自动检测</button>
+            </div>
+            <p class="setting-note">由本机 BaoCut 的 MOSS 模型离线转写，音频不会离开电脑。</p>
+          </section>
+
+          <section class="setting">
+            <h3>语音转写结果</h3>
+            <div class="segmented" id="voiceModeGroup" role="group" aria-label="转写结果处理方式">
+              <button type="button" data-mode="direct">直接写入</button>
+              <button type="button" data-mode="edit">先放入输入框</button>
+            </div>
+            <p class="setting-note">先放入输入框时，转写完成后可以修改文字，再点「记下」写入。</p>
+          </section>
+
+          <section class="setting">
+            <h3>BaoCut</h3>
+            <p class="setting-value" id="settingBao"></p>
+            <div class="setting-actions">
+              <button type="button" class="ghost-btn" id="setBaoBtn">指定 CLI</button>
+              <button type="button" class="ghost-btn" id="probeBtn">重新检测</button>
+            </div>
+          </section>
+
+          <section class="setting about">
+            <h3>PureMemo <span class="version" id="version"></span></h3>
+            <p class="setting-note">
+              一个文件，最新在最上面。纯文本、无标签、无层级，需要时直接搜索，也可以整份交给 AI 当记忆语料。
+            </p>
+          </section>
+        </div>
+
+        <footer class="settings-foot">
+          <button type="button" class="primary-btn" id="doneBtn">完成</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

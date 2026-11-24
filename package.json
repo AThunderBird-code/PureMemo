@@ -1,0 +1,64 @@
+{
+  "name": "purememo",
+  "productName": "PureMemo",
+  "version": "1.0.0",
+  "description": "Append-only plain-text memo. One file, newest on top, voice via BaoCut.",
+  "type": "module",
+  "main": "src/main/main.js",
+  "author": "PureMemo",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "icons": "node scripts/make-icons.mjs",
+    "dist": "electron-builder --win",
+    "dist:dir": "electron-builder --win --dir"
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0",
+    "png-to-ico": "^3.0.2",
+    "sharp": "^0.35.5"
+  },
+  "build": {
+    "appId": "app.purememo.desktop",
+    "productName": "PureMemo",
+    "copyright": "PureMemo",
+    "directories": {
+      "output": "dist",
+      "buildResources": "src/assets"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "win": {
+      "icon": "src/assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "PureMemo",
+      "artifactName": "PureMemo-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "PureMemo-${version}-portable.${ext}"
+    }
+  }
+}
