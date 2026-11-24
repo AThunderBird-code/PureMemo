@@ -35,7 +35,7 @@ PureMemo 是一个极小化的 Windows 日记应用。它只做一件事：把�
 
 Windows 10/11 x64。
 
-**直接使用**：运行 `PureMemo-Setup-<version>.exe` 安装，或使用免安装的 `PureMemo-<version>-portable.exe`。
+**直接使用**：运行 `PureMemo-Setup-<version>.exe` 安装，或使用免安装的 `PureMemo-<version>-portable.exe`（构建产物不随仓库提交，可在本地执行 `npm run dist` 生成）。
 
 **从源码运行**（Node.js 18+）：
 
@@ -139,7 +139,7 @@ No tags, no folders, no hierarchy, no commentary. Append-only, used like a clipb
 
 Windows 10/11 x64.
 
-Use `PureMemo-Setup-<version>.exe`, or the standalone `PureMemo-<version>-portable.exe`.
+Use `PureMemo-Setup-<version>.exe`, or the standalone `PureMemo-<version>-portable.exe` (build artifacts are not committed; generate them with `npm run dist`).
 
 From source (Node.js 18+):
 
